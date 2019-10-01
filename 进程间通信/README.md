@@ -4,13 +4,13 @@
 
 ## Features
 
-1.Server端的主管道/tmp/talk/myfifo用来接收Client发送的通信请求
+1. Server端的主管道/tmp/talk/myfifo用来接收Client发送的通信请求
 
-2.Client和Server端交互的包类型分为4种：登录、会话、心跳、退出。
+2. Client和Server端交互的包类型分为4种：登录、会话、心跳、退出。
 
-3.Server端的管道类型都是阻塞型。Client的私有读管道、读终端都是非阻塞型，写主管道是阻塞型。
+3. Server端的管道类型都是阻塞型。Client的私有读管道、读终端都是非阻塞型，写主管道是阻塞型。
 
-4.心跳包是Server用来判断Client是否掉线。
+4. 心跳包是Server用来判断Client是否掉线。
 
 ## 知识点
 
