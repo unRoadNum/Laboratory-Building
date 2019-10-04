@@ -108,7 +108,7 @@ int main(int argc, char *arv[])
 	if (last_len != 0) {
 		stSubThreadPara.len = last_len;
 		stSubThreadPara.record = pRecord + (max_num-1) * sizeof(int);
-		pthread_create(&tid, NULL, th_copy, (void)*stSubThreadPara);
+		pthread_create(&tid, NULL, th_copy, (void*)&stSubThreadPara);
 		pthread_detach(tid);
 	}
 
