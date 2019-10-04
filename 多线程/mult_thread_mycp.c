@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
 		close(fd_src);
 		return -1;
 	}
-	p_dst = mmap(NULL, len_src, PROT_WRITE | PROT_READ, MAP_SHARED, fd_src, 0);
-	close(fd_dst);
+	p_src = mmap(NULL, len_src, PROT_WRITE | PROT_READ, MAP_SHARED, fd_src, 0);
+	close(fd_src);
 
 	// 暂时不考虑超过3个G的文件copy
 
@@ -85,8 +85,8 @@ int main(int argc, char *argv[])
 	write(fd_dst, "\0", 1);
 
 	// 映射目标文件
-	p_src = mmap(NULL, len_dst, PROT_WRITE | PROT_READ, MAP_SHARED, fd_dst, 0);
-	close(fd_src);
+	p_dst = mmap(NULL, len_dst, PROT_WRITE | PROT_READ, MAP_SHARED, fd_dst, 0);
+	close(fd_dst);
 
 	max_num = atoi(argv[3]);
 	size = len_src / max_num;
