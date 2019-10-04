@@ -103,6 +103,8 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	memset(pRecord, 0, max_num*sizeof(int));
+
 	for (i = 0; i < max_num-1; i++) {
 		stSubThreadPara.index = i;
 		stSubThreadPara.len = size;
