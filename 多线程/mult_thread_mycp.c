@@ -17,7 +17,7 @@ typedef struct subThreadPara{
 	char *dstAddr; // 目的起始地址
 	int size;  // copy的每个块长度
 	int len;  // copy长度
-	char *record; // 进度记录地址
+	int *record; // 进度记录地址
 }stSubThreadPara;
 
 /*
@@ -81,11 +81,11 @@ int main(int argc, char *argv[])
 	// 暂时不考虑超过3个G的文件copy
 
 	// 写入目标文件一个字节，拓展目标文件
-	len_dst = lseek(fd_dst, len_src, SEEK_SET)
+	len_dst = lseek(fd_dst, len_src, SEEK_SET);
 	write(fd_dst, "\0", 1);
 
 	// 映射目标文件
-	p_src = mmap(NULL, len_dst, PROT_WRITE | PROT_READ, MAP_SHARED, fd_dst, 0)；
+	p_src = mmap(NULL, len_dst, PROT_WRITE | PROT_READ, MAP_SHARED, fd_dst, 0);
 	close(fd_src);
 
 	max_num = atoi(argv[3]);
