@@ -34,7 +34,7 @@ void* th_copy(void *arg)
 	memcpy(pDstAddr, pSrcAddr, pInfo->len);
 	memcpy(pInfo->record, RECORDED, strlen(RECORDED));
 	printf("[%s:%d] index=%d, record=%p, val=%s\n",
-		__FILE__, __LINE__, pInfo->index, pInfo->record, *(pInfo->record));
+		__FILE__, __LINE__, pInfo->index, pInfo->record, (pInfo->record));
 	return (void*)0;
 }
 
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	memset(pRecord, 0, max_num*strlen(UNRECORD));
-	memcpy(pRecord, UNRECORD, max*strlen(UNRECORD));
+	memcpy(pRecord, UNRECORD, max_num*strlen(UNRECORD));
 
 	for (i = 0; i < max_num; i++) {
 		pstSubThreadPara->size = size;
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 	while(1) {
 		for (i=0; i<max_num; i++) {
 			pTmp = (int*)(pRecord + i*sizeof(int));
-			printf("[%s:%d] addr=%p, val=%d\n", __FILE__, __LINE__, pTmp, *pTmp);
+			printf("[%s:%d] addr=%p, val=%s\n", __FILE__, __LINE__, pTmp, pTmp);
 			if(strcmp(pTmp, RECORDED) == 0) {
 				printf(" *");
 				memcpy(pTmp, UNRECORD, strlen(UNRECORD));
