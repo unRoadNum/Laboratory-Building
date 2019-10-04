@@ -113,9 +113,9 @@ int main(int argc, char *arv[])
 	}
 
 	// 计算进度条
+	tmp = 0;
 	while(1) {
 		for (i=0; i<max_num; i++) {
-			tmp = 0;
 			pTmp = (int*)(pRecord + i*sizeof(int));
 			if(*pTmp == 1) {
 				printf(" *");
