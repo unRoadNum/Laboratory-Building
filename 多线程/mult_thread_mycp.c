@@ -94,6 +94,8 @@ int main(int argc, char *argv[])
 	max_num = atoi(argv[3]);
 	size = len_src / max_num;
 	last_len = len_src % max_num;
+	printf("[%s:%d] len_src=%d, max_num=%d, size=%d, last_len=%d\n",
+		__FILE__, __LINE__, len_src, max_num, size, last_len);
 
 	pstSubThreadPara = (stSubThreadPara*)malloc(max_num *sizeof(stSubThreadPara));
 	if (pstSubThreadPara == NULL) {
