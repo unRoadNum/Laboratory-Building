@@ -93,7 +93,6 @@ int main(int argc, char *argv[])
 	last_len = len_src % max_num;
 
 	(void)memset(&stSubThreadPara, 0, sizeof(stSubThreadPara));
-	stSubThreadPara.index = i;
 	stSubThreadPara.size = size;
 	stSubThreadPara.dstAddr = p_dst;
 	stSubThreadPara.srcAddr = p_src;
@@ -104,7 +103,8 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	for (i = 0; i < max_num -1; i++) {
+	for (i = 0; i < max_num-1; i++) {
+		stSubThreadPara.index = i;
 		stSubThreadPara.len = size;
 		stSubThreadPara.record = pRecord + i * sizeof(int);
 		pthread_create(&tid, NULL, th_copy, (void*)&stSubThreadPara);
@@ -112,6 +112,7 @@ int main(int argc, char *argv[])
 	}
 
 	if (last_len != 0) {
+		stSubThreadPara.index = max_num-1;
 		stSubThreadPara.len = last_len;
 		stSubThreadPara.record = pRecord + (max_num-1) * sizeof(int);
 		pthread_create(&tid, NULL, th_copy, (void*)&stSubThreadPara);
