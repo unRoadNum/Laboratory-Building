@@ -143,6 +143,7 @@ int main(int argc, char *argv[])
 	}
 
 	free(pRecord);
+	free(pstSubThreadPara);
 
 	munmap(p_dst, len_dst);
 	munmap(p_src, len_src);
