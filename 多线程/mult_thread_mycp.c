@@ -30,7 +30,7 @@ void* th_copy(void *arg)
 	char *pSrcAddr = pInfo->srcAddr + pInfo->index * pInfo->size;
 	char *pDstAddr = pInfo->dstAddr + pInfo->index * pInfo->size;
 	memcpy(pDstAddr, pSrcAddr, pInfo->len);
-	memcpy(pInfo->record, 1, size(int));
+	memcpy(pInfo->record, 1, sizeof(int));
 	printf("[%s:%d] index=%d, record=%p, val=%d\n",
 		__FILE__, __LINE__, pInfo->index, pInfo->record, *(pInfo->record));
 	return (void*)0;
