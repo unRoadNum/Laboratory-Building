@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 	char *p_src;
 	char *p_dst;
 	pthread_t tid;
-	stSubThreadPara  stSubThreadPara;
+	stSubThreadPara  *pstSubThreadPara;
 	int i, size, last_len, tmp;
 	int max_num;
 	int *pRecord; 
@@ -95,36 +95,44 @@ int main(int argc, char *argv[])
 	size = len_src / max_num;
 	last_len = len_src % max_num;
 
-	(void)memset(&stSubThreadPara, 0, sizeof(stSubThreadPara));
-	stSubThreadPara.size = size;
-	stSubThreadPara.dstAddr = p_dst;
-	stSubThreadPara.srcAddr = p_src;
+	pstSubThreadPara = (stSubThreadPara*)malloc(max_num *sizeof(stSubThreadPara));
+	if (pstSubThreadPara == NULL) {
+		printf("[%s:%d] Get thread para space fail.\n", __FILE__, __LINE__);
+		return -1;
+	}
+	(void)memset(pstSubThreadPara, 0, max_num * sizeof(stSubThreadPara));
 
 	pRecord = (int*)malloc(max_num*sizeof(int));
 	if (pRecord == NULL) {
 		printf("Get record space fail.\n");
 		return -1;
 	}
-
 	memset(pRecord, 0, max_num*sizeof(int));
 
 	for (i = 0; i < max_num-1; i++) {
-		stSubThreadPara.index = i;
-		stSubThreadPara.len = size;
-		stSubThreadPara.record = pRecord + i * sizeof(int);
+		pstSubThreadPara->size = size;
+		pstSubThreadPara->dstAddr = p_dst;
+		pstSubThreadPara->srcAddr = p_src;
+		pstSubThreadPara->index = i;
+		pstSubThreadPara->len = size;
+		pstSubThreadPara->record = pRecord + i * sizeof(int);
 		printf("[%s:%d] index=%d, record=%p\n", 
-			__FILE__, __LINE__, i, stSubThreadPara.record);
-		pthread_create(&tid, NULL, th_copy, (void*)&stSubThreadPara);
+			__FILE__, __LINE__, i, pstSubThreadPara->record);
+		pthread_create(&tid, NULL, th_copy, (void*)pstSubThreadPara);
 		pthread_detach(tid);
+		pstSubThreadPara++;
 	}
 
 	if (last_len != 0) {
-		stSubThreadPara.index = max_num-1;
-		stSubThreadPara.len = last_len;
-		stSubThreadPara.record = pRecord + (max_num-1) * sizeof(int);
+		pstSubThreadPara->size = size;
+		pstSubThreadPara->dstAddr = p_dst;
+		pstSubThreadPara->srcAddr = p_src;
+		pstSubThreadPara->index = max_num-1;
+		pstSubThreadPara->len = last_len;
+		pstSubThreadPara->record = pRecord + (max_num-1) * sizeof(int);
 		printf("[%s:%d] index=%d, record=%p\n",
-			__FILE__, __LINE__, stSubThreadPara.index, stSubThreadPara.record);
-		pthread_create(&tid, NULL, th_copy, (void*)&stSubThreadPara);
+			__FILE__, __LINE__, pstSubThreadPara->index, pstSubThreadPara->record);
+		pthread_create(&tid, NULL, th_copy, (void*)pstSubThreadPara);
 		pthread_detach(tid);
 	}
 
