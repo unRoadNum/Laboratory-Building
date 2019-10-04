@@ -111,31 +111,18 @@ int main(int argc, char *argv[])
 	}
 	memset(pRecord, 0, max_num*sizeof(int));
 
-	for (i = 0; i < max_num-1; i++) {
+	for (i = 0; i < max_num; i++) {
 		pstSubThreadPara->size = size;
 		pstSubThreadPara->dstAddr = p_dst;
 		pstSubThreadPara->srcAddr = p_src;
 		pstSubThreadPara->index = i;
-		pstSubThreadPara->len = size;
+		pstSubThreadPara->len = (last_len == 0 ? size : last_len);
 		pstSubThreadPara->record = pRecord + i * sizeof(int);
 		printf("[%s:%d] index=%d, record=%p\n", 
 			__FILE__, __LINE__, i, pstSubThreadPara->record);
 		pthread_create(&tid, NULL, th_copy, (void*)pstSubThreadPara);
 		pthread_detach(tid);
 		pstSubThreadPara++;
-	}
-
-	if (last_len != 0) {
-		pstSubThreadPara->size = size;
-		pstSubThreadPara->dstAddr = p_dst;
-		pstSubThreadPara->srcAddr = p_src;
-		pstSubThreadPara->index = max_num-1;
-		pstSubThreadPara->len = last_len;
-		pstSubThreadPara->record = pRecord + (max_num-1) * sizeof(int);
-		printf("[%s:%d] index=%d, record=%p\n",
-			__FILE__, __LINE__, pstSubThreadPara->index, pstSubThreadPara->record);
-		pthread_create(&tid, NULL, th_copy, (void*)pstSubThreadPara);
-		pthread_detach(tid);
 	}
 
 	// 计算进度条
