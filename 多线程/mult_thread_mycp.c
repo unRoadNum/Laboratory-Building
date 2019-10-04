@@ -30,7 +30,7 @@ void* th_copy(void *arg)
 	char *pSrcAddr = pInfo->srcAddr + pInfo->index * pInfo->size;
 	char *pDstAddr = pInfo->dstAddr + pInfo->index * pInfo->size;
 	memcpy(pDstAddr, pSrcAddr, pInfo->len);
-	*(char*)pInfo->record = 1;
+	*(int*)pInfo->record = 1;
 	return (void*)0;
 }
 
