@@ -30,7 +30,7 @@ void* th_copy(void *arg)
 	char *pSrcAddr = pInfo->srcAddr + pInfo->index * pInfo->size;
 	char *pDstAddr = pInfo->dstAddr + pInfo->index * pInfo->size;
 	memcpy(pDstAddr, pSrcAddr, pInfo->len);
-	*(int*)(pInfo->record) = 1;
+	*(pInfo->record) = 1;
 	return (void*)0;
 }
 
@@ -45,7 +45,8 @@ int main(int argc, char *argv[])
 	stSubThreadPara  stSubThreadPara;
 	int i, size, last_len, tmp;
 	int max_num;
-	int *pRecord, *pTmp;
+	int *pRecord; 
+	int *pTmp;
 	
 	if (argc < 4) {
 		printf("Usage: ./mycp src dst N");
