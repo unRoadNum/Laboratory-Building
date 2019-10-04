@@ -30,7 +30,7 @@ void* th_copy(void *arg)
 	char *pSrcAddr = pInfo->srcAddr + pInfo->index * pInfo->size;
 	char *pDstAddr = pInfo->dstAddr + pInfo->index * pInfo->size;
 	memcpy(pDstAddr, pSrcAddr, pInfo->len);
-	*(pInfo->record) = 1;
+	memcpy(pInfo->record, 1, size(int));
 	printf("[%s:%d] index=%d, record=%p, val=%d\n",
 		__FILE__, __LINE__, pInfo->index, pInfo->record, *(pInfo->record));
 	return (void*)0;
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 			printf("[%s:%d] addr=%p, val=%d\n", __FILE__, __LINE__, pTmp, *pTmp);
 			if(*pTmp == 1) {
 				printf(" *");
-				*pTmp = 0;
+				memset(pTmp, 0, sizeof(int));
 				tmp++;
 			}
 		}
@@ -143,8 +143,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	free(pRecord);
 	free(pstSubThreadPara);
+	free(pRecord);
 
 	munmap(p_dst, len_dst);
 	munmap(p_src, len_src);
