@@ -49,8 +49,8 @@ int main(int argc, char *argv[])
 	stSubThreadPara  *pstSubThreadPara;
 	int i, size, last_len, tmp;
 	int max_num;
-	int *pRecord; 
-	int *pTmp;
+	char *pRecord; 
+	char *pTmp;
 	
 	if (argc < 4) {
 		printf("Usage: ./mycp src dst N");
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
 		pstSubThreadPara->srcAddr = p_src;
 		pstSubThreadPara->index = i;
 		pstSubThreadPara->len = (last_len == 0 ? size : last_len);
-		pstSubThreadPara->record = pRecord + i * sizeof(int);
+		pstSubThreadPara->record = pRecord + i * strlen(UNRECORD);
 		printf("[%s:%d] index=%d, record=%p\n", 
 			__FILE__, __LINE__, i, pstSubThreadPara->record);
 		pthread_create(&tid, NULL, th_copy, (void*)pstSubThreadPara);
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 	tmp = 0;
 	while(1) {
 		for (i=0; i<max_num; i++) {
-			pTmp = (int*)(pRecord + i*sizeof(int));
+			pTmp = (int*)(pRecord + i*strlen(UNRECORD));
 			printf("[%s:%d] addr=%p, val=%s\n", __FILE__, __LINE__, pTmp, pTmp);
 			if(strcmp(pTmp, RECORDED) == 0) {
 				printf(" *");
