@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/mman.h>
 
 // 每次copy的大小是512M
 #define  COPY_BLOCK_SIZE  512*1024*1024
@@ -28,14 +34,14 @@ void* th_copy(void *arg)
 	return (void*)0;
 }
 
-int main(int argc, char *arv[])
+int main(int argc, char *argv[])
 {
 	int ret = 0;
 	int fd_src, fd_dst;
 	int len_src, len_dst;
 	char *p_src;
 	char *p_dst;
-	thread_t tid;
+	pthread_t tid;
 	stSubThreadPara  stSubThreadPara;
 	int i, size, last_len, tmp;
 	int max_num;
@@ -54,7 +60,7 @@ int main(int argc, char *arv[])
 	}
 
 	// 打开源文件
-	fd_src = open(argv[2], O_RDWR);
+	fd_src = open(argv[1], O_RDWR);
 	if (fd_src < 0) {
 		perror("Create src file.\n");
 		close(fd_dst);
