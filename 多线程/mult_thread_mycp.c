@@ -130,6 +130,7 @@ int main(int argc, char *argv[])
 	while(1) {
 		for (i=0; i<max_num; i++) {
 			pTmp = (int*)(pRecord + i*sizeof(int));
+			printf("[%s:%d] addr=%p, val=%d\n", __FILE__, __LINE__, pTmp, *pTmp);
 			if(*pTmp == 1) {
 				printf(" *");
 				*pTmp = 0;
