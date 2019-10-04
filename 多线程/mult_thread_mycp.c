@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 	}
 	(void)memset(pstSubThreadPara, 0, max_num * sizeof(stSubThreadPara));
 
-	pRecord = (int*)malloc(max_num*strlen(UNRECORD));
+	pRecord = (char*)malloc(max_num*strlen(UNRECORD));
 	if (pRecord == NULL) {
 		printf("Get record space fail.\n");
 		return -1;
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 	tmp = 0;
 	while(1) {
 		for (i=0; i<max_num; i++) {
-			pTmp = (int*)(pRecord + i*strlen(UNRECORD));
+			pTmp = (char*)(pRecord + i*strlen(UNRECORD));
 			printf("[%s:%d] addr=%p, val=%s\n", __FILE__, __LINE__, pTmp, pTmp);
 			if(strcmp(pTmp, RECORDED) == 0) {
 				printf(" *");
