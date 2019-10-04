@@ -30,7 +30,7 @@ void* th_copy(void *arg)
 	char *pSrcAddr = pInfo->srcAddr + pInfo->index * pInfo->size;
 	char *pDstAddr = pInfo->dstAddr + pInfo->index * pInfo->size;
 	memcpy(pDstAddr, pSrcAddr, pInfo->len);
-	printf("[%s:%d] index=%d, record=%x\n",
+	printf("[%s:%d] index=%d, record=%p\n",
 		__FILE__, __LINE__, pInfo->index, pInfo->record);
 	*(pInfo->record) = 1;
 	return (void*)0;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 		stSubThreadPara.index = i;
 		stSubThreadPara.len = size;
 		stSubThreadPara.record = pRecord + i * sizeof(int);
-		printf("[%s:%d] index=%d, record=%x\n", 
+		printf("[%s:%d] index=%d, record=%p\n", 
 			__FILE__, __LINE__, i, stSubThreadPara.record);
 		pthread_create(&tid, NULL, th_copy, (void*)&stSubThreadPara);
 		pthread_detach(tid);
@@ -122,8 +122,8 @@ int main(int argc, char *argv[])
 		stSubThreadPara.index = max_num-1;
 		stSubThreadPara.len = last_len;
 		stSubThreadPara.record = pRecord + (max_num-1) * sizeof(int);
-		printf("[%s:%d] index=%d, record=%x\n",
-			_FILE__, __LINE__, stSubThreadPara.index, stSubThreadPara.record);
+		printf("[%s:%d] index=%d, record=%p\n",
+			__FILE__, __LINE__, stSubThreadPara.index, stSubThreadPara.record);
 		pthread_create(&tid, NULL, th_copy, (void*)&stSubThreadPara);
 		pthread_detach(tid);
 	}
