@@ -129,6 +129,8 @@ int main(int argc, char *arv[])
 		}
 	}
 
+	free(pRecord);
+
 	munmap(p_dst, len_dst);
 	munmap(p_src, len_src);
 	
