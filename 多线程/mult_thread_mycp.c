@@ -10,8 +10,6 @@
 
 // 每次copy的大小是512M
 #define  COPY_BLOCK_SIZE  512*1024*1024
-#define  RECORDED  "Y"
-#define  UNRECORD  "N"
 
 typedef struct subThreadPara{
 	int index; // copy地址索引
@@ -32,7 +30,7 @@ void* th_copy(void *arg)
 	char *pSrcAddr = pInfo->srcAddr + pInfo->index * pInfo->size;
 	char *pDstAddr = pInfo->dstAddr + pInfo->index * pInfo->size;
 	memcpy(pDstAddr, pSrcAddr, pInfo->len);
-	memcpy(pInfo->record, RECORDED, strlen(RECORDED));
+	*pInfo->record = 1;
 	printf("[%s:%d] index=%d, record=%p, val=%s\n",
 		__FILE__, __LINE__, pInfo->index, pInfo->record, (pInfo->record));
 	return (void*)0;
@@ -106,21 +104,20 @@ int main(int argc, char *argv[])
 	}
 	(void)memset(pstSubThreadPara, 0, max_num * sizeof(stSubThreadPara));
 
-	pRecord = (char*)malloc(max_num*strlen(UNRECORD));
+	pRecord = (char*)malloc(max_num*sizeof(char));
 	if (pRecord == NULL) {
 		printf("Get record space fail.\n");
 		return -1;
 	}
-	memset(pRecord, 0, max_num*strlen(UNRECORD));
-	memcpy(pRecord, UNRECORD, max_num*strlen(UNRECORD));
-
+	memset(pRecord, 0, max_num*sizeof(char));
+	
 	for (i = 0; i < max_num; i++) {
 		pstSubThreadPara->size = size;
 		pstSubThreadPara->dstAddr = p_dst;
 		pstSubThreadPara->srcAddr = p_src;
 		pstSubThreadPara->index = i;
 		pstSubThreadPara->len = (last_len == 0 ? size : last_len);
-		pstSubThreadPara->record = pRecord + i * strlen(UNRECORD);
+		pstSubThreadPara->record = pRecord + i * sizeof(char);
 		printf("[%s:%d] index=%d, record=%p\n", 
 			__FILE__, __LINE__, i, pstSubThreadPara->record);
 		pthread_create(&tid, NULL, th_copy, (void*)pstSubThreadPara);
@@ -132,11 +129,11 @@ int main(int argc, char *argv[])
 	tmp = 0;
 	while(1) {
 		for (i=0; i<max_num; i++) {
-			pTmp = (char*)(pRecord + i*strlen(UNRECORD));
+			pTmp = (char*)(pRecord + i*sizeof(char));
 			printf("[%s:%d] addr=%p, val=%s\n", __FILE__, __LINE__, pTmp, pTmp);
-			if(strcmp(pTmp, RECORDED) == 0) {
+			if(*pTmp == 1) {
 				printf(" *");
-				memcpy(pTmp, UNRECORD, strlen(UNRECORD));
+				*pTmp = 0;
 				tmp++;
 			}
 		}
