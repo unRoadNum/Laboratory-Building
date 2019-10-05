@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 	char *p_dst;
 	pthread_t tid;
 	stSubThreadPara  *pstSubThreadPara;
+	stSubThreadPara  *pStartPara;
 	int i, size, last_len, tmp;
 	int max_num;
 	char *pRecord; 
@@ -100,6 +101,8 @@ int main(int argc, char *argv[])
 		printf("[%s:%d] Get thread para space fail.\n", __FILE__, __LINE__);
 		return -1;
 	}
+	// 保存起始指针，以便于释放
+	pStartPara = pstSubThreadPara; 
 	(void)memset(pstSubThreadPara, 0, max_num * sizeof(stSubThreadPara));
 
 	pRecord = (char*)malloc(max_num*sizeof(char));
@@ -140,7 +143,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	free(pstSubThreadPara);
+	free(pStartPara);
 	free(pRecord);
 
 	munmap(p_dst, len_dst);
