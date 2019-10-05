@@ -128,7 +128,6 @@ int main(int argc, char *argv[])
 	while(1) {
 		for (i=0; i<max_num; i++) {
 			pTmp = (char*)(pRecord + i*sizeof(char));
-			printf("[%s:%d] addr=%p, val=%s\n", __FILE__, __LINE__, pTmp, pTmp);
 			if(*pTmp == 1) {
 				printf(" *");
 				*pTmp = 0;
